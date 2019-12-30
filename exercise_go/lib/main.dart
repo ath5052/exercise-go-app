@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'listdisplay.dart';
 import 'complexlistdisplay.dart';
+import 'package:exercise_go/View/exercise_list.dart';
 
 void main() => runApp(
-    MyApp()
+    //MyApp()
+    ExerciseGo()
 );
 
 class MyApp extends StatelessWidget {
@@ -15,3 +17,14 @@ class MyApp extends StatelessWidget {
   }
 }
 
+class ExerciseGo extends StatelessWidget{
+  @override
+  Widget build(BuildContext context){
+    return MaterialApp(
+      title: 'Exercise Go',
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(primarySwatch: Colors.blue),
+      home: ExerciseList(),
+    );
+  }
+}
