@@ -8,6 +8,7 @@ void main() => runApp(
     ExerciseGo()
 );
 
+/*
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext ctxt) {
@@ -16,13 +17,14 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+*/
 
 class ExerciseGo extends StatelessWidget{
   @override
   Widget build(BuildContext context){
     return MaterialApp(
       title: 'Exercise Go',
-      debugShowCheckedModeBanner: false,
+      //debugShowCheckedModeBanner: false,
       theme: ThemeData(primarySwatch: Colors.blue),
       home: ExerciseList(),
     );
