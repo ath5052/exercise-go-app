@@ -5,8 +5,6 @@ import 'package:exercise_go/Controller/database_helper.dart';
 import 'package:exercise_go/View/exercise_list.dart';
 import 'package:sqflite/sqflite.dart';
 
-import 'dart:async';
-
 class ExerciseList extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
