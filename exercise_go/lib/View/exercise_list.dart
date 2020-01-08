@@ -4,6 +4,8 @@ import 'package:exercise_go/Model/Exercise.dart';
 import 'package:exercise_go/Controller/database_helper.dart';
 import 'package:exercise_go/View/exercise_list.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:intl/intl.dart';
+
 
 class ExerciseList extends StatefulWidget {
   @override
@@ -20,6 +22,11 @@ class ExerciseListState extends State<ExerciseList> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
+    if (exerciseList == null) {
+      exerciseList = List<Exercise>();
+      updateListView();
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Exercise Go'),
@@ -27,16 +34,34 @@ class ExerciseListState extends State<ExerciseList> {
       body: getExerciseListView(),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          updateListView();
+          setState(() {
+            debugPrint('add button clicked');
+            _updateTitle();
+          });
         },
+        child: Icon(Icons.add),
       ),
     );
   }
 
+  Exercise exercise;
+
+  void _updateTitle() async {
+    exercise.title = 'test';
+    exercise.description = 'test';
+    exercise.date = DateFormat.yMMMd().format(DateTime.now());
+    int result;
+    result = await databaseHelper.insertExercise(exercise);
+  }
+
   ListView getExerciseListView() {
-    return ListView.builder(itemBuilder: (BuildContext context, int position) {
+    return ListView.builder(
+        itemCount: count,
+        itemBuilder: (BuildContext context, int position) {
       return Text(
         this.exerciseList[position].title,
+        //exerciseList?.elementAt(position) ??""
+        //position.toString()
       );
     });
   }
@@ -44,11 +69,12 @@ class ExerciseListState extends State<ExerciseList> {
   void updateListView() {
     final Future<Database> dbFuture = databaseHelper.initializeDatabase();
     dbFuture.then((database) {
-      Future<List<Exercise>> todoListFuture = databaseHelper.getExerciseList();
-      todoListFuture.then((todoList) {
+      Future<List<Exercise>> exerciseListFuture =
+          databaseHelper.getExerciseList();
+      exerciseListFuture.then((exerciseList) {
         setState(() {
           this.exerciseList = exerciseList;
-          this.count = todoList.length;
+          this.count = exerciseList.length;
         });
       });
     });
