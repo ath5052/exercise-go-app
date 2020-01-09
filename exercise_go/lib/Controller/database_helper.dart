@@ -2,12 +2,11 @@ import 'package:sqflite/sqflite.dart';
 import 'dart:async';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
-import 'package:exercise_go/Model/Exercise.dart';
+import 'package:exercise_go/Model/exercise.dart';
 
 class DatabaseHelper {
-
-  static DatabaseHelper _databaseHelper;    // Singleton DatabaseHelper
-  static Database _database;                // Singleton Database
+  static DatabaseHelper _databaseHelper; // Singleton DatabaseHelper
+  static Database _database; // Singleton Database
 
   String exerciseTable = 'exercise_table';
   String colId = 'id';
@@ -18,15 +17,14 @@ class DatabaseHelper {
   DatabaseHelper._createInstance(); // Named constructor to create instance of DatabaseHelper
 
   factory DatabaseHelper() {
-
     if (_databaseHelper == null) {
-      _databaseHelper = DatabaseHelper._createInstance(); // This is executed only once, singleton object
+      _databaseHelper = DatabaseHelper
+          ._createInstance(); // This is executed only once, singleton object
     }
     return _databaseHelper;
   }
 
   Future<Database> get database async {
-
     if (_database == null) {
       _database = await initializeDatabase();
     }
@@ -39,13 +37,14 @@ class DatabaseHelper {
     String path = directory.path + 'exercises.db';
 
     // Open/create the database at a given path
-    var exercisesDatabase = await openDatabase(path, version: 1, onCreate: _createDb);
+    var exercisesDatabase =
+        await openDatabase(path, version: 1, onCreate: _createDb);
     return exercisesDatabase;
   }
 
   void _createDb(Database db, int newVersion) async {
-
-    await db.execute('CREATE TABLE $exerciseTable($colId INTEGER PRIMARY KEY AUTOINCREMENT, $colTitle TEXT, '
+    await db.execute(
+        'CREATE TABLE $exerciseTable($colId INTEGER PRIMARY KEY AUTOINCREMENT, $colTitle TEXT, '
         '$colDescription TEXT, $colDate TEXT)');
   }
 
@@ -68,36 +67,41 @@ class DatabaseHelper {
   // Update Operation: Update a exercise object and save it to database
   Future<int> updateExercise(Exercise exercise) async {
     var db = await this.database;
-    var result = await db.update(exerciseTable, exercise.toMap(), where: '$colId = ?', whereArgs: [exercise.id]);
+    var result = await db.update(exerciseTable, exercise.toMap(),
+        where: '$colId = ?', whereArgs: [exercise.id]);
     return result;
   }
 
   Future<int> updateExerciseCompleted(Exercise exercise) async {
     var db = await this.database;
-    var result = await db.update(exerciseTable, exercise.toMap(), where: '$colId = ?', whereArgs: [exercise.id]);
+    var result = await db.update(exerciseTable, exercise.toMap(),
+        where: '$colId = ?', whereArgs: [exercise.id]);
     return result;
   }
 
   // Delete Operation: Delete a exercise object from database
   Future<int> deleteExercise(int id) async {
     var db = await this.database;
-    int result = await db.rawDelete('DELETE FROM $exerciseTable WHERE $colId = $id');
+    int result =
+        await db.rawDelete('DELETE FROM $exerciseTable WHERE $colId = $id');
     return result;
   }
 
   // Get number of exercise objects in database
   Future<int> getCount() async {
     Database db = await this.database;
-    List<Map<String, dynamic>> x = await db.rawQuery('SELECT COUNT (*) from $exerciseTable');
+    List<Map<String, dynamic>> x =
+        await db.rawQuery('SELECT COUNT (*) from $exerciseTable');
     int result = Sqflite.firstIntValue(x);
     return result;
   }
 
   // Get the 'Map List' [ List<Map> ] and convert it to 'exercise List' [ List<exercise> ]
   Future<List<Exercise>> getExerciseList() async {
-
-    var exerciseMapList = await getExerciseMapList(); // Get 'Map List' from database
-    int count = exerciseMapList.length;         // Count the number of map entries in db table
+    var exerciseMapList =
+        await getExerciseMapList(); // Get 'Map List' from database
+    int count =
+        exerciseMapList.length; // Count the number of map entries in db table
 
     List<Exercise> exerciseList = List<Exercise>();
     // For loop to create a 'exercise List' from a 'Map List'
@@ -107,12 +111,4 @@ class DatabaseHelper {
 
     return exerciseList;
   }
-
 }
-
-
-
-
-
-
-

@@ -1,11 +1,11 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:exercise_go/Model/Exercise.dart';
+import 'package:exercise_go/Model/exercise.dart';
+import 'package:exercise_go/Model/exercise_detail.dart';
 import 'package:exercise_go/Controller/database_helper.dart';
-import 'package:exercise_go/View/exercise_list.dart';
+
 import 'package:sqflite/sqflite.dart';
 import 'package:intl/intl.dart';
-
 
 class ExerciseList extends StatefulWidget {
   @override
@@ -36,34 +36,26 @@ class ExerciseListState extends State<ExerciseList> {
         onPressed: () {
           setState(() {
             debugPrint('add button clicked');
-            _updateTitle();
+            navigateToDetail(Exercise('', '', ''), 'Add Exercise');
           });
         },
+        tooltip: 'Add Exercise',
         child: Icon(Icons.add),
       ),
     );
-  }
-
-  Exercise exercise;
-
-  void _updateTitle() async {
-    exercise.title = 'test';
-    exercise.description = 'test';
-    exercise.date = DateFormat.yMMMd().format(DateTime.now());
-    int result;
-    result = await databaseHelper.insertExercise(exercise);
   }
 
   ListView getExerciseListView() {
     return ListView.builder(
         itemCount: count,
         itemBuilder: (BuildContext context, int position) {
-      return Text(
-        this.exerciseList[position].title,
-        //exerciseList?.elementAt(position) ??""
-        //position.toString()
-      );
-    });
+          return Text(
+            this.exerciseList[position].title,
+
+            //exerciseList?.elementAt(position) ??""
+            //position.toString()
+          );
+        });
   }
 
   void updateListView() {
@@ -78,5 +70,16 @@ class ExerciseListState extends State<ExerciseList> {
         });
       });
     });
+  }
+
+  void navigateToDetail(Exercise exercise, String title) async {
+    bool result =
+        await Navigator.push(context, MaterialPageRoute(builder: (context) {
+      return ExerciseDetail(exercise, title);
+    }));
+
+    if (result == true) {
+      updateListView();
+    }
   }
 }
