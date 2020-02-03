@@ -9,10 +9,12 @@ class DatabaseHelper {
   static Database _database; // Singleton Database
 
   String exerciseTable = 'exercise_table';
+  String colExerciseID = 'exerciseId';
   String colId = 'id';
   String colTitle = 'title';
   String colDescription = 'description';
   String colDate = 'date';
+
 
   DatabaseHelper._createInstance(); // Named constructor to create instance of DatabaseHelper
 
@@ -45,7 +47,7 @@ class DatabaseHelper {
   void _createDb(Database db, int newVersion) async {
     await db.execute(
         'CREATE TABLE $exerciseTable($colId INTEGER PRIMARY KEY AUTOINCREMENT, $colTitle TEXT, '
-        '$colDescription TEXT, $colDate TEXT)');
+        '$colDescription TEXT, $colDate TEXT , $colExerciseID TEXT)');
   }
 
   // Fetch Operation: Get all exercise objects from database

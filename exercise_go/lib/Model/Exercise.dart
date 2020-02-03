@@ -3,6 +3,7 @@ class Exercise {
   String _title;
   String _description;
   String _date;
+  String _exerciseId;
 
   Exercise(this._title, this._date, [this._description]);
 
@@ -16,11 +17,14 @@ class Exercise {
 
   String get date => _date;
 
+  String get exerciseId => _exerciseId;
+
   set title(String newTitle) {
     if (newTitle.length <= 255) {
       this._title = newTitle;
     }
   }
+
   set description(String newDescription) {
     if (newDescription.length <= 255) {
       this._description = newDescription;
@@ -31,8 +35,11 @@ class Exercise {
     this._date = newDate;
   }
 
-  Map<String, dynamic> toMap() {
+  set exerciseId(String id) {
+    this._exerciseId = id;
+  }
 
+  Map<String, dynamic> toMap() {
     var map = Map<String, dynamic>();
     if (id != null) {
       map['id'] = _id;
@@ -40,6 +47,7 @@ class Exercise {
     map['title'] = _title;
     map['description'] = _description;
     map['date'] = _date;
+    map['exerciseId'] = _exerciseId;
 
     return map;
   }
@@ -49,6 +57,6 @@ class Exercise {
     this._title = map['title'];
     this._description = map['description'];
     this._date = map['date'];
+    this._exerciseId = map['exerciseId'];
   }
-
 }

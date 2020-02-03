@@ -151,11 +151,25 @@ class ExerciseDetailState extends State<ExerciseDetail> {
     exercise.description = descriptionController.text;
   }
 
+  String _add0(String s) {
+    if(s.length<2)
+      return s = '0' + s;
+    else
+      return s;
+  }
+
   // Save data to database
   void _save() async {
     moveToLastScreen();
 
-    exercise.date = DateFormat.yMMMd().format(DateTime.now());
+    String year = DateFormat.y().format(DateTime.now());
+    String month = DateFormat.M().format(DateTime.now());
+    String day = DateFormat.d().format(DateTime.now());
+    String weekday = DateFormat.E().format(DateTime.now());
+
+    exercise.date = year +  _add0(month) +  _add0(day) + weekday;
+    exercise.exerciseId = year +  _add0(month) +  _add0(day) + exercise.title;
+
     int result;
     if (exercise.id != null) {
       // Case 1: Update operation
