@@ -1,6 +1,6 @@
 # exercise_go
 
-A new Flutter application.
+A demo Flutter application for. This app is use to record you daily workout.
 
 ## Getting Started
 
